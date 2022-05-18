@@ -31,7 +31,7 @@ jobs:
 
   deploy-staging:
     # On master and beta branches
-    if: github.event_name == 'push' && ! startsWith(gthub.ref, 'refs/tags/')
+    if: ${{ github.event_name == 'push' && ! startsWith(gthub.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 From master branch"
