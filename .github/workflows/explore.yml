@@ -24,6 +24,7 @@ jobs:
         shell: bash
         run: |
           branch_lowercase="${GITHUB_REF_NAME,,}" && normalized_branch="${branch_lowercase////-}"
+          echo "$normalized_branch"
           if [ -z "$normalized_branch" ]
           then
             echo "ENV=dev requires the workflow to have a branch name!"
