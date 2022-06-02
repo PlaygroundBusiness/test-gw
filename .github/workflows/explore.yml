@@ -23,7 +23,7 @@ jobs:
       - name: Branch name
         shell: bash
         run: |
-          echo "${github.ref_name}"
+          echo "$github.ref_name"
           branch_lowercase="${GITHUB_REF_NAME,,}" && normalized_branch="${branch_lowercase////-}"
           echo "$normalized_branch"
           if [ -z "$normalized_branch" ]
