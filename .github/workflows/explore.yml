@@ -33,6 +33,12 @@ jobs:
           else
             echo "::set-output name=normalized::${normalized_branch}"
           fi
+
+      - uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: kareemgr
+
       - run: echo "🎉 From pull request or branches"
 
   deploy-dev:
