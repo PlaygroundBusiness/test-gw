@@ -2,7 +2,7 @@ name: Stellate
 
 on:
   issue_comment:
-    [created]
+    types: [created]
 # on:
 #   workflow_dispatch:
 #     inputs:
