@@ -1,7 +1,6 @@
 name: Stellate
 
-on:
-  issue_comment:
+on: issue_comment
 # on:
 #   workflow_dispatch:
 #     inputs:
