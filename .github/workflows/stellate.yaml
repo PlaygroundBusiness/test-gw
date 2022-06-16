@@ -1,0 +1,36 @@
+name: Stellate
+
+on:
+  issue_comment:
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         description: 'Environment used for deployment'
+#         required: true
+#         default: 'staging'
+#         type: choice
+#         options:
+#           - development
+#           - staging
+#           - production
+
+jobs:
+  main:
+    if: ${{ github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.3.0'
+          check-latest: true
+
+      - name: Pulling environment
+        run: echo '${{ github.event.issue.comment.body }}'
+
+      # - name: Push to Stellate
+      #   run: npx stellate push
+      #   env:
+      #     STELLATE_TOKEN: ${{ secrets.STELLATE_TOKEN }}
+
