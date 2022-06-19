@@ -1,13 +1,14 @@
 injectHeaders: true
-enablePlayground: false
+enablePlayground: true
 headers:
-  gcdn-force: "1"
+  gcdn-force: "0"
 scopes:
-  AUTHENTICATED: cookie:user_id|header:authorization
+  AUTHENTICATED: cookie:user_id|header:authorization2
 rootTypeNames:
   query: Query
   mutation: Mutation
 schema: https://kareem.test/schema
 name: kareem-test
-originUrl: https://kareem.test/schema
+originUrl: https://kareem.oops/schema
+
 
