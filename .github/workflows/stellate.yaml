@@ -38,13 +38,15 @@ jobs:
               | .originUrl=.environments["dev"].originUrl
               | del(.environments)
           ' -i new-stellate.yml
-          output=$(dyff between -b ./new-stellate.yml ./stellate.yml)
-          echo "::set-output name=comment::${output}"
+          DIFF=$(dyff between -b ./new-stellate.yml ./stellate.yml)
+          echo "DIFF<<EOF" >> $GITHUB_ENV
+          echo "$DIFF" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Add PR comment
         uses: JoseThen/comment-pr@v1.1.1
         with:
-          comment: "Diff\n${{ steps.diff.outputs.comment }}"
+          comment: "Diff\n${{ env.DIFF }}"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
