@@ -1,6 +1,9 @@
 name: Stellate
 
 on:
+  push:
+    branches: [master]
+    paths: [stellate.yml]
   pull_request:
     branches: [master]
     paths: [stellate.yml]
@@ -10,32 +13,16 @@ permissions:
   pull-requests: write
 
 jobs:
-  main:
+  deploy_production:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v2
-      - uses: samuelmeuli/action-snapcraft@v1
-      - run: sudo snap install dyff yq
-
-      - name: Diff
-        id: diff
-        run: |
-          yq '
-            .schema=.environments["dev"].schema
-              | .name=.environments["dev"].name
-              | .originUrl=.environments["dev"].originUrl
-              | del(.environments)
-          ' -i new-stellate.yml
-          DIFF=$(dyff between -b ./new-stellate.yml ./stellate.yml)
-          echo "DIFF<<EOF" >> $GITHUB_ENV
-          echo "$DIFF" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-      - name: Add PR comment
-        if: env.DIFF != ''
-        uses: JoseThen/comment-pr@v1.1.1
+      - uses: actions/setup-node@v2
         with:
-          comment: "## Stellate\n:warning:The following changes will be applied to all environments (dev, staging, production) after merging:\n```${{ env.DIFF }}\n```"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          node-version: '16.3.0'
+          check-latest: true
 
+      - name: Deploy development
+        run: |
+          npx stellate push --env development
