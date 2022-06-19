@@ -26,10 +26,14 @@ jobs:
       - run: sudo snap install dyff yq
 
       - name: Diff
-        shell: bash
         run: |
-          yq "del(.environments)" new-stellate.yml
-          dyff ./new-stellate.yml ./stellate.yml
+          yq '
+            .schema=.environments["dev"].schema
+              | .name=.environments["dev"].name
+              | .originUrl=.environments["dev"].originUrl
+              | del(.environments)
+          ' -i new-stellate.yml
+          dyff between -b ./new-stellate.yml ./stellate.yml
 
 
 
