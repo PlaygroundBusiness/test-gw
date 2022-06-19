@@ -19,6 +19,7 @@ on:
 
 permissions:
   # Required for adding PR comment
+  id-token: write
   pull-requests: write
 
 jobs:
