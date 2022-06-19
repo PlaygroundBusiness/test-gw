@@ -1,7 +1,7 @@
 injectHeaders: true
 enablePlayground: true
 headers:
-  gcdn-force: "0"
+  gcdn-force: "1"
 scopes:
   AUTHENTICATED: cookie:user_id|header:authorization2
 rootTypeNames:
