@@ -13,7 +13,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  deploy_production:
+  deploy_development:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     environment: production
@@ -26,4 +26,19 @@ jobs:
 
       - name: Deploy development
         run: |
-          npx stellate push --env development
+          echo 'Deploying development'
+
+  deploy_production:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    environment: production
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.3.0'
+          check-latest: true
+
+      - name: Deploy production
+        run: |
+          echo 'Deploying production'
