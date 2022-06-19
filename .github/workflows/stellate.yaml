@@ -1,9 +1,6 @@
 name: Stellate
 
 on:
-  push:
-    branches:
-      - '**'
   pull_request:
     branches: [main]
 
@@ -22,7 +19,6 @@ on:
 
 permissions:
   # Required for adding PR comment
-  id-token: write
   pull-requests: write
 
 jobs:
