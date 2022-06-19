@@ -1,8 +1,9 @@
 name: Stellate
 
 on:
-  issue_comment:
-    types: [created]
+  push:
+    branches:
+      - '**'
 # on:
 #   workflow_dispatch:
 #     inputs:
@@ -21,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: chrisdickinson/setup-yq@latest
+      - uses: samuelmeuli/action-snapcraft@v1
+      - run: sudo snap install dyff
       - uses: actions/setup-node@v2
         with:
           node-version: '16.3.0'
