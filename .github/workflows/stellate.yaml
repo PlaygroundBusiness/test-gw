@@ -12,6 +12,7 @@ permissions:
 jobs:
   main:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v2
       - uses: samuelmeuli/action-snapcraft@v1
