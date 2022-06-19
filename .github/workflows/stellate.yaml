@@ -3,19 +3,7 @@ name: Stellate
 on:
   pull_request:
     branches: [master]
-
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       environment:
-#         description: 'Environment used for deployment'
-#         required: true
-#         default: 'staging'
-#         type: choice
-#         options:
-#           - development
-#           - staging
-#           - production
+    paths: [stellate.yml]
 
 permissions:
   # Required for adding PR comment
@@ -46,6 +34,6 @@ jobs:
       - name: Add PR comment
         uses: JoseThen/comment-pr@v1.1.1
         with:
-          comment: "## Stellate\n:warning:The following changes will be applied to all environments (dev, staging, production) after merging:\n```\n${{ env.DIFF }}\n```"
+          comment: "## Stellate\n:warning:The following changes will be applied to all environments (dev, staging, production) after merging:\n```${{ env.DIFF }}\n```"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
