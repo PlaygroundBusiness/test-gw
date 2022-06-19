@@ -17,6 +17,10 @@ on:
 #           - staging
 #           - production
 
+permissions:
+  # Required for adding PR comment
+  pull-requests: write
+
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -26,6 +30,7 @@ jobs:
       - run: sudo snap install dyff yq
 
       - name: Diff
+        id: diff
         run: |
           yq '
             .schema=.environments["dev"].schema
@@ -33,7 +38,15 @@ jobs:
               | .originUrl=.environments["dev"].originUrl
               | del(.environments)
           ' -i new-stellate.yml
-          dyff between -b ./new-stellate.yml ./stellate.yml
+          output=$(dyff between -b ./new-stellate.yml ./stellate.yml)
+          echo "::set-output name=comment::${output}"
+
+      - name: Add PR comment
+        uses: JoseThen/comment-pr@v1.1.1
+        with:
+          comment: "Diff\n${{ steps.diff.outputs.comment }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
 
 
