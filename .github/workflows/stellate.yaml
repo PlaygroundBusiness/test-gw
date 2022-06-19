@@ -30,11 +30,11 @@ jobs:
           node-version: '16.3.0'
           check-latest: true
 
-      - name: Pulling environment
-        run: echo '${{ github.event.issue.comment.body }}'
+      - name: Diff
+        shell: bash
+        run: |
+          yq '.schema=.environments["dev"].schema | .name=.environments["dev"].name | .originUrl=.environments["dev"].originUrl | del(.environments)' -i new-stellate.yml
+          dyff ./new-stellate.yml ./stellate.yml
 
-      # - name: Push to Stellate
-      #   run: npx stellate push
-      #   env:
-      #     STELLATE_TOKEN: ${{ secrets.STELLATE_TOKEN }}
+
 
