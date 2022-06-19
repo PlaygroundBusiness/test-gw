@@ -33,7 +33,7 @@ jobs:
       - name: Diff
         shell: bash
         run: |
-          yq '.schema=.environments["dev"].schema | .name=.environments["dev"].name | .originUrl=.environments["dev"].originUrl | del(.environments)' -i new-stellate.yml
+          yq 'del(.environments)' new-stellate.yml
           dyff ./new-stellate.yml ./stellate.yml
 
 
