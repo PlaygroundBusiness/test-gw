@@ -46,6 +46,6 @@ jobs:
       - name: Add PR comment
         uses: JoseThen/comment-pr@v1.1.1
         with:
-          comment: "## Stellate\n:warning:The following changes will be applied to all environments (dev, staging, production) after merging:\n```${{ env.DIFF }}```"
+          comment: "## Stellate\n:warning:The following changes will be applied to all environments (dev, staging, production) after merging:\n```\n${{ env.DIFF }}\n```"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
