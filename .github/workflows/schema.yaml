@@ -24,7 +24,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository: kareemgr/test-gw
+          repository: PlaygroundBusiness/test-gw
           event-type: extra-env
           client-payload: |-
             {
