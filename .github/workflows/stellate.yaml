@@ -29,7 +29,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update service extraEnv
-        if: ${{ env.EXTRA_ENV_KEY != "not_set" && env.EXTRA_ENV_VALUE != "not_set" }}
+        # if: ${{ github.event.action == 'extra-env' }}
         uses: mikefarah/yq@master
         with:
           cmd: |
