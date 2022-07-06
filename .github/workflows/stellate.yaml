@@ -33,7 +33,7 @@ jobs:
         uses: mikefarah/yq@master
         with:
           cmd: |
-            yq -i ".extraEnv += {'name': '$EXTRA_ENV_KEY', 'value': '$EXTRA_ENV_VALUE'}" \
+            yq -i ".extraEnv += {'name': '', 'value': ''}" \
               kubernetes/applications/grover-apps/values-$ENVIRONMENT/$APP_NAME.yaml
 
       - name: Commit changes
