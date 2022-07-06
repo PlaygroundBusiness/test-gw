@@ -1,14 +1,18 @@
 name: Update service definition
-
 on:
-  push:
+  repository_dispatch:
+    types:
+      # Add/Update extraEnv object inside the given service definition
+      #   - If EXTRA_ENV_KEY already exists, it will update it's value with EXTRA_ENV_VALUE
+      #   - If EXTRA_ENV_KEY doesn't exist, it will add a new key/value.
+      - extra-env
 
 env:
-  EXTRA_ENV_KEY: FORCE_RESTART
-  EXTRA_ENV_VALUE: uh-oh
-  ENVIRONMENT: staging
-  APP_NAME: graphql-gateway
-  AUTHOR: kareem
+  EXTRA_ENV_KEY: ${{ github.event.client_payload.extra_env_key }}
+  EXTRA_ENV_VALUE: ${{ github.event.client_payload.extra_env_value }}
+  ENVIRONMENT: ${{ github.event.client_payload.environment }}
+  APP_NAME: ${{ github.event.client_payload.app_name }}
+  AUTHOR: ${{ github.event.client_payload.author }}
 
 jobs:
   update:

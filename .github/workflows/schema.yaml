@@ -1,0 +1,41 @@
+name: Deploy schema changes
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deploy to:'
+        type: environment
+        required: true
+
+permissions:
+  id-token: write
+  checks: read
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy schema to environment
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Redeploy gateway service
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: kareemgr/test-gw
+          event-type: extra-env
+          client-payload: |-
+            {
+              "extra_env_key": "FORCE_REDEPLOY",
+              "extra_env_value": "yes_yes"
+              "environment": "production",
+              "app_name": "${{ github.event.repository.name }}",
+              "author": "${{ github.actor }}"
+            }
+
+      - name: Deployment status
+        run: echo "Your deployment is on the way! Check status updates on https://argocd.eu-${{ github.event.inputs.environment }}.internal.grover.com/applications/${{ github.event.repository.name }}"
+
+
