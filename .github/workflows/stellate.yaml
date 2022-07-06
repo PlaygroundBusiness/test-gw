@@ -1,22 +1,47 @@
-name: Stellate
-
+name: Update service definition
 on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
-
-permissions:
-  # Required for adding PR comment
-  pull-requests: write
+  repository_dispatch:
+    types:
+      - extra-env  # Update extraEnv inside a service
+env:
+  EXTRA_ENV_KEY: ${{ github.event.client_payload.extra_env_key || 'not_set' }}
+  EXTRA_ENV_VALUE: ${{ github.event.client_payload.extra_env_value || 'not_set' }}
+  ENVIRONMENT: ${{ github.event.client_payload.environment }}
+  APP_NAME: ${{ github.event.client_payload.app_name }}
+  AUTHOR: ${{ github.event.client_payload.author }}
 
 jobs:
-  deploy_development:
+  update:
+    name: Update service extraEnv
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      # Wait for previous run to finish to make sure no push conflicts appear
+      - name: Wait for previous runs to finish
+        uses: mktcode/consecutive-workflow-action@v1
+        timeout-minutes: 3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set foobar to cool
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: master #allows for rerun in case of failure
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update service extraEnv
+        if: ${{ github.event.action == 'extra-env' }}
         uses: mikefarah/yq@master
         with:
-          cmd: yq -i '.foo.bar = "cool"' 'config.yml'
+          cmd: |
+            yq -i '.extraEnv += {"name": "$EXTRA_ENV_KEY", "value": "$EXTRA_ENV_VALUE"}' \
+              kubernetes/applications/grover-apps/values-$ENVIRONMENT/$APP_NAME.yaml
+
+      - name: Commit changes
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git fetch
+          git add .
+          git commit -m "Automated: $APP_NAME ${{ github.event.action }} in env/pr $ENVIRONMENT by $AUTHOR"
+          git rebase origin/master
+          git push
