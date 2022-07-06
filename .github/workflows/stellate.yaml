@@ -5,7 +5,7 @@ on:
 
 env:
   EXTRA_ENV_KEY: FORCE_RESTART
-  EXTRA_ENV_VALUE: 233kanfdasfds
+  EXTRA_ENV_VALUE: uh-oh
   ENVIRONMENT: staging
   APP_NAME: graphql-gateway
   AUTHOR: kareem
