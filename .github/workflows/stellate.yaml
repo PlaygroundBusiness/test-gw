@@ -12,7 +12,7 @@ env:
 
 jobs:
   update:
-    name: Update service extraEnv
+    name: Update service
     runs-on: ubuntu-latest
     steps:
       # Wait for previous run to finish to make sure no push conflicts appear
@@ -29,7 +29,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update service extraEnv
-        if: ${{ github.event.action == 'extra-env' }}
+        # if: ${{ github.event.action == 'extra-env' }}
         uses: mikefarah/yq@master
         with:
           cmd: |
