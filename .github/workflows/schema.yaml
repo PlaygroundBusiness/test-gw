@@ -29,7 +29,7 @@ jobs:
           client-payload: |-
             {
               "extra_env_key": "FORCE_REDEPLOY",
-              "extra_env_value": "yes_yes"
+              "extra_env_value": "yes_yes",
               "environment": "production",
               "app_name": "${{ github.event.repository.name }}",
               "author": "${{ github.actor }}"
