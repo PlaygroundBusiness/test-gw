@@ -1,14 +1,14 @@
 name: Update service definition
+
 on:
-  repository_dispatch:
-    types:
-      - extra-env  # Update extraEnv inside a service
+  push:
+
 env:
-  EXTRA_ENV_KEY: ${{ github.event.client_payload.extra_env_key || 'not_set' }}
-  EXTRA_ENV_VALUE: ${{ github.event.client_payload.extra_env_value || 'not_set' }}
-  ENVIRONMENT: ${{ github.event.client_payload.environment }}
-  APP_NAME: ${{ github.event.client_payload.app_name }}
-  AUTHOR: ${{ github.event.client_payload.author }}
+  EXTRA_ENV_KEY: FORCE_RESTART
+  EXTRA_ENV_VALUE: 233kanfdasfds
+  ENVIRONMENT: staging
+  APP_NAME: graphql-gateway
+  AUTHOR: kareem
 
 jobs:
   update:

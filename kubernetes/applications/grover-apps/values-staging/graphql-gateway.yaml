@@ -1,0 +1,93 @@
+environment: staging
+system: web-platform
+service: graphql-gateway
+# The major version number for your service. No need to change at all.
+version: 1
+# Path to environment variables in SSM Parameter store
+secretsPath: /k8s/staging/graphql-gateway
+# Docker settings
+image:
+  repository: 031440329442.dkr.ecr.eu-central-1.amazonaws.com/graphql-gateway
+  tag: pr-192-67e68f5 # ArgoCD_Pointer
+  imagePullPolicy: Always
+# Jobs that are run before syncing the application
+preSyncJobs:
+  - name: schema
+    istioenabled: true
+    containers:
+      - name: schema
+        command: ["/bin/sh", "-c"]
+        args:
+          - npm run validate_schema; x=$(echo $?); curl -fsI -X POST http://localhost:15020/quitquitquit && exit $x
+extraEnv:
+  - name: NODE_ENV
+    value: staging
+# Istio uses the service account name as a component of the service's security
+# identity. Set "create" to false to use an previously created service account.
+serviceAccount:
+  create: true
+# The initial number of pod replicas to run for your service
+# Please refer to this ticket: https://byebuyglobaloperations.atlassian.net/browse/WP-440
+replicaCount: 2
+# Horizontal pod autoscaler configuration (optional)
+autoscaling:
+  # Please refer to this ticket: https://byebuyglobaloperations.atlassian.net/browse/WP-440
+  minReplicas: 2
+  maxReplicas: 3
+  targetAverageCpuUtilization: 80
+# Port settings
+# Ports must be named <protocol>[-<suffix>] to work with Istio.
+# Valid protocols are grpc, http, http2, https, mongo, mysql, redis, tcp, tls, udp
+ports:
+  - name: http
+    port: 7001
+    targetPort: 7001
+# Configure the Istio ingress gateway to route outside traffic for the provided
+# host name to this service on the ports and protocols defined in the 'ports' section
+# above. Required only for externally accessible services.
+virtualServices:
+  - name: internal
+    dns: ~
+    gateways:
+      - "istio-system/private-ingressgateway"
+    hosts:
+      - "graphql-gateway.eu-staging.internal.grover.com"
+    match:
+      - uri:
+          prefix: "/"
+  - name: public
+    dns: ~
+    gateways:
+      - "istio-system/public-ingressgateway"
+    hosts:
+      - "graphql-gateway.eu-staging.grover.com"
+      - "graphql-staging.grover.com"
+    match:
+      - uri:
+          prefix: "/"
+# Resource settings (use Kubernetes syntax)
+resources:
+  requests:
+    memory: "900Mi"
+    cpu: "700m"
+  limits:
+    memory: "1000Mi"
+    cpu: "1000m"
+# Probe settings (use Kubernetes syntax)
+# Optional
+probes:
+  livenessProbe:
+    initialDelaySeconds: 30
+    httpGet:
+      path: /health
+      port: 7001
+# Only schedule on amd64 nodes by default
+# More info https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+nodeSelector:
+  kubernetes.io/arch: amd64
+affinity: {}
+tolerations: {}
+# List of Security Group Ids used attached to the application.
+# Remember about allowing traffic to CoreDNS (cluster SG)!
+securityGroupIds:
+  - sg-0515906b85d6d8910
