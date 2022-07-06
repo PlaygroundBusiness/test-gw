@@ -3,10 +3,8 @@ name: Stellate
 on:
   push:
     branches: [master]
-    paths: [stellate.yml]
   pull_request:
     branches: [master]
-    paths: [stellate.yml]
 
 permissions:
   # Required for adding PR comment
