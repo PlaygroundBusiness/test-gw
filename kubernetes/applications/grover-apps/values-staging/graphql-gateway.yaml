@@ -22,6 +22,8 @@ preSyncJobs:
 extraEnv:
   - name: NODE_ENV
     value: staging
+  - name: FORCE_RESTART
+    value: 233kanfdasfds
 # Istio uses the service account name as a component of the service's security
 # identity. Set "create" to false to use an previously created service account.
 serviceAccount:
