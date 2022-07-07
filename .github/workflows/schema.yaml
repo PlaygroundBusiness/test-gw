@@ -23,7 +23,7 @@ jobs:
       - name: Redeploy gateway service
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: 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
           repository: PlaygroundBusiness/test-gw
           event-type: extra-env
           client-payload: |-

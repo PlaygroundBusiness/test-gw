@@ -35,6 +35,8 @@ jobs:
       - name: Update service extraEnv
         # if: ${{ github.event.action == 'extra-env' }}
         uses: mikefarah/yq@master
+        env:
+          FILE_NAME: kubernetes/applications/grover-apps/values-$ENVIRONMENT/$APP_NAME.yaml
         with:
           cmd: ./bin/update_extra_env.sh
 
