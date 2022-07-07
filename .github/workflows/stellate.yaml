@@ -35,10 +35,8 @@ jobs:
       - name: Update service extraEnv
         # if: ${{ github.event.action == 'extra-env' }}
         uses: mikefarah/yq@master
-        env:
-          FILE_NAME: /kubernetes/applications/grover-apps/values-$ENVIRONMENT/$APP_NAME.yaml
         with:
-          cmd: sh .github/workflows/bin/update_extra_env.sh
+          cmd: FILE_NAME=kubernetes/applications/grover-apps/values-$ENVIRONMENT/$APP_NAME.yaml sh .github/workflows/bin/update_extra_env.sh
 
 
       - name: Commit changes
