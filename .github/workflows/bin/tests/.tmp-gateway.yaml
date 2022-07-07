@@ -1,4 +1,0 @@
-service: graphql-gateway
-extraEnv:
-  - name: SCHEMA_ID
-    value: 123
