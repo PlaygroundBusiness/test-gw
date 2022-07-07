@@ -38,7 +38,6 @@ jobs:
         with:
           cmd: FILE_NAME=kubernetes/applications/grover-apps/values-$ENVIRONMENT/$APP_NAME.yaml sh .github/workflows/bin/update_extra_env.sh
 
-
       - name: Commit changes
         run: |
           git config user.name github-actions
