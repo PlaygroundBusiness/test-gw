@@ -27,7 +27,7 @@ extraEnv:
   - name: FORCE_REDEPLOY
     value: yes_yes
   - name: IGNORE_FORCE_REDEPLOY
-    value: $GITHUB_RUN_ID
+    value: 2629696726-17
 # Istio uses the service account name as a component of the service's security
 # identity. Set "create" to false to use an previously created service account.
 serviceAccount:
