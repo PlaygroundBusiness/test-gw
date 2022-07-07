@@ -36,9 +36,8 @@ jobs:
         # if: ${{ github.event.action == 'extra-env' }}
         uses: mikefarah/yq@master
         with:
-          cmd: |
-            yq -i '(.extraEnv | .[(to_entries | .[] | select(.value.name == env(EXTRA_ENV_KEY)).key) // length]) += {"name": env(EXTRA_ENV_KEY), "value": env(EXTRA_ENV_VALUE)}' \
-              kubernetes/applications/grover-apps/values-$ENVIRONMENT/$APP_NAME.yaml
+          cmd: ./bin/update_extra_env.sh
+
 
       - name: Commit changes
         run: |
