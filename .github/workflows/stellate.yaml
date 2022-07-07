@@ -38,7 +38,7 @@ jobs:
         env:
           FILE_NAME: kubernetes/applications/grover-apps/values-$ENVIRONMENT/$APP_NAME.yaml
         with:
-          cmd: ./bin/update_extra_env.sh
+          cmd: .github/workflows/bin/update_extra_env.sh
 
 
       - name: Commit changes
