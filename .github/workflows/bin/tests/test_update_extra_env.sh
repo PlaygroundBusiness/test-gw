@@ -63,3 +63,5 @@ EOF
 )
 testExtraEnv "SCHEMA_ID" "123" "$before" "$after"
 
+#### Test cleanup
+rm $SERVICE_FILE_NAME
